@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Pokes</title>
+	</head>
+	<body>
+		<h1>Welcome, {{ request.session.alias }}</h1>
+		<a href="/logout">Logout</a>
+		<!-- how many people poked user session.number-->
+		{% for poker in poked %}
+			<p>{{ poker.poked_by.name }} poked you</p>
+		{% endfor %}
+		<p>People you may want to poke:</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Alias</th>
+					<th>Email Address</th>
+					<th>Poke History</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in all_users %}
+				<tr>
+					<td>{{ user.name }}</td>
+					<td>{{ user.alias }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.pokes }} pokes</td>
+					<td>
+						<form action="/pokes/add/{{ user.id }}" method="post">
+							{% csrf_token %}
+							<input type="submit" name="submit" value="Poke!">
+						</form>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>
